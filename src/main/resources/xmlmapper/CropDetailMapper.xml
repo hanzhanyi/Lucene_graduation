@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.forestWolf.luceneGraduation.mapper.CropDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.forestWolf.luceneGraduation.pojo.CropDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="crop_name" property="cropName" jdbcType="VARCHAR" />
+    <result column="english_name" property="englishName" jdbcType="VARCHAR" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="crop_img" property="cropImg" jdbcType="BIGINT" />
+    <result column="damage_sym" property="damageSym" jdbcType="VARCHAR" />
+    <result column="occurrence_factor" property="occurrenceFactor" jdbcType="VARCHAR" />
+    <result column="morphology" property="morphology" jdbcType="VARCHAR" />
+    <result column="habits" property="habits" jdbcType="VARCHAR" />
+    <result column="handle_method" property="handleMethod" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="another_name" property="anotherName" jdbcType="VARCHAR" />
+    <result column="label_detail" property="labelDetail" jdbcType="BIGINT" />
+    <result column="crop_type" property="cropType" jdbcType="BIGINT" />
+    <result column="Pathogen" property="pathogen" jdbcType="VARCHAR" />
+    <result column="Cycle" property="cycle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, crop_name, english_name, introduction, crop_img, damage_sym, occurrence_factor, 
+    morphology, habits, handle_method, create_time, update_time, another_name, label_detail, 
+    crop_type, Pathogen, Cycle
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from crop_label_info_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByExampleByPage" resultMap="BaseResultMap" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetailExamplePage" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from crop_label_info_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="pageNo != null and pageSize != null">
+      limit #{pageNo,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from crop_label_info_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from crop_label_info_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetailExample" >
+    delete from crop_label_info_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetail" >
+    insert into crop_label_info_detail (id, crop_name, english_name, 
+      introduction, crop_img, damage_sym, 
+      occurrence_factor, morphology, habits, 
+      handle_method, create_time, update_time, 
+      another_name, label_detail, crop_type, 
+      Pathogen, Cycle)
+    values (#{id,jdbcType=BIGINT}, #{cropName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+      #{introduction,jdbcType=VARCHAR}, #{cropImg,jdbcType=BIGINT}, #{damageSym,jdbcType=VARCHAR}, 
+      #{occurrenceFactor,jdbcType=VARCHAR}, #{morphology,jdbcType=VARCHAR}, #{habits,jdbcType=VARCHAR}, 
+      #{handleMethod,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{anotherName,jdbcType=VARCHAR}, #{labelDetail,jdbcType=BIGINT}, #{cropType,jdbcType=BIGINT}, 
+      #{pathogen,jdbcType=VARCHAR}, #{cycle,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetail" >
+    insert into crop_label_info_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cropName != null" >
+        crop_name,
+      </if>
+      <if test="englishName != null" >
+        english_name,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="cropImg != null" >
+        crop_img,
+      </if>
+      <if test="damageSym != null" >
+        damage_sym,
+      </if>
+      <if test="occurrenceFactor != null" >
+        occurrence_factor,
+      </if>
+      <if test="morphology != null" >
+        morphology,
+      </if>
+      <if test="habits != null" >
+        habits,
+      </if>
+      <if test="handleMethod != null" >
+        handle_method,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="anotherName != null" >
+        another_name,
+      </if>
+      <if test="labelDetail != null" >
+        label_detail,
+      </if>
+      <if test="cropType != null" >
+        crop_type,
+      </if>
+      <if test="pathogen != null" >
+        Pathogen,
+      </if>
+      <if test="cycle != null" >
+        Cycle,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="cropName != null" >
+        #{cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="cropImg != null" >
+        #{cropImg,jdbcType=BIGINT},
+      </if>
+      <if test="damageSym != null" >
+        #{damageSym,jdbcType=VARCHAR},
+      </if>
+      <if test="occurrenceFactor != null" >
+        #{occurrenceFactor,jdbcType=VARCHAR},
+      </if>
+      <if test="morphology != null" >
+        #{morphology,jdbcType=VARCHAR},
+      </if>
+      <if test="habits != null" >
+        #{habits,jdbcType=VARCHAR},
+      </if>
+      <if test="handleMethod != null" >
+        #{handleMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="anotherName != null" >
+        #{anotherName,jdbcType=VARCHAR},
+      </if>
+      <if test="labelDetail != null" >
+        #{labelDetail,jdbcType=BIGINT},
+      </if>
+      <if test="cropType != null" >
+        #{cropType,jdbcType=BIGINT},
+      </if>
+      <if test="pathogen != null" >
+        #{pathogen,jdbcType=VARCHAR},
+      </if>
+      <if test="cycle != null" >
+        #{cycle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetailExample" resultType="java.lang.Integer" >
+    select count(*) from crop_label_info_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update crop_label_info_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.cropName != null" >
+        crop_name = #{record.cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.englishName != null" >
+        english_name = #{record.englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introduction != null" >
+        introduction = #{record.introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cropImg != null" >
+        crop_img = #{record.cropImg,jdbcType=BIGINT},
+      </if>
+      <if test="record.damageSym != null" >
+        damage_sym = #{record.damageSym,jdbcType=VARCHAR},
+      </if>
+      <if test="record.occurrenceFactor != null" >
+        occurrence_factor = #{record.occurrenceFactor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.morphology != null" >
+        morphology = #{record.morphology,jdbcType=VARCHAR},
+      </if>
+      <if test="record.habits != null" >
+        habits = #{record.habits,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleMethod != null" >
+        handle_method = #{record.handleMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.anotherName != null" >
+        another_name = #{record.anotherName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.labelDetail != null" >
+        label_detail = #{record.labelDetail,jdbcType=BIGINT},
+      </if>
+      <if test="record.cropType != null" >
+        crop_type = #{record.cropType,jdbcType=BIGINT},
+      </if>
+      <if test="record.pathogen != null" >
+        Pathogen = #{record.pathogen,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cycle != null" >
+        Cycle = #{record.cycle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update crop_label_info_detail
+    set id = #{record.id,jdbcType=BIGINT},
+      crop_name = #{record.cropName,jdbcType=VARCHAR},
+      english_name = #{record.englishName,jdbcType=VARCHAR},
+      introduction = #{record.introduction,jdbcType=VARCHAR},
+      crop_img = #{record.cropImg,jdbcType=BIGINT},
+      damage_sym = #{record.damageSym,jdbcType=VARCHAR},
+      occurrence_factor = #{record.occurrenceFactor,jdbcType=VARCHAR},
+      morphology = #{record.morphology,jdbcType=VARCHAR},
+      habits = #{record.habits,jdbcType=VARCHAR},
+      handle_method = #{record.handleMethod,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      another_name = #{record.anotherName,jdbcType=VARCHAR},
+      label_detail = #{record.labelDetail,jdbcType=BIGINT},
+      crop_type = #{record.cropType,jdbcType=BIGINT},
+      Pathogen = #{record.pathogen,jdbcType=VARCHAR},
+      Cycle = #{record.cycle,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetail" >
+    update crop_label_info_detail
+    <set >
+      <if test="cropName != null" >
+        crop_name = #{cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="englishName != null" >
+        english_name = #{englishName,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="cropImg != null" >
+        crop_img = #{cropImg,jdbcType=BIGINT},
+      </if>
+      <if test="damageSym != null" >
+        damage_sym = #{damageSym,jdbcType=VARCHAR},
+      </if>
+      <if test="occurrenceFactor != null" >
+        occurrence_factor = #{occurrenceFactor,jdbcType=VARCHAR},
+      </if>
+      <if test="morphology != null" >
+        morphology = #{morphology,jdbcType=VARCHAR},
+      </if>
+      <if test="habits != null" >
+        habits = #{habits,jdbcType=VARCHAR},
+      </if>
+      <if test="handleMethod != null" >
+        handle_method = #{handleMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="anotherName != null" >
+        another_name = #{anotherName,jdbcType=VARCHAR},
+      </if>
+      <if test="labelDetail != null" >
+        label_detail = #{labelDetail,jdbcType=BIGINT},
+      </if>
+      <if test="cropType != null" >
+        crop_type = #{cropType,jdbcType=BIGINT},
+      </if>
+      <if test="pathogen != null" >
+        Pathogen = #{pathogen,jdbcType=VARCHAR},
+      </if>
+      <if test="cycle != null" >
+        Cycle = #{cycle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.forestWolf.luceneGraduation.pojo.CropDetail" >
+    update crop_label_info_detail
+    set crop_name = #{cropName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      crop_img = #{cropImg,jdbcType=BIGINT},
+      damage_sym = #{damageSym,jdbcType=VARCHAR},
+      occurrence_factor = #{occurrenceFactor,jdbcType=VARCHAR},
+      morphology = #{morphology,jdbcType=VARCHAR},
+      habits = #{habits,jdbcType=VARCHAR},
+      handle_method = #{handleMethod,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      another_name = #{anotherName,jdbcType=VARCHAR},
+      label_detail = #{labelDetail,jdbcType=BIGINT},
+      crop_type = #{cropType,jdbcType=BIGINT},
+      Pathogen = #{pathogen,jdbcType=VARCHAR},
+      Cycle = #{cycle,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

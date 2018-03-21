@@ -33,6 +33,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="test" domainObjectName="Test"/>
+        <table tableName="crop_label_info_detail" domainObjectName="CropDetail"/>
+
     </context>
 </generatorConfiguration>
