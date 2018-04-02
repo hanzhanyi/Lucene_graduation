@@ -1,5 +1,6 @@
 package com.forestWolf.luceneGraduation.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.forestWolf.luceneGraduation.lucene.CropIndex;
 import com.forestWolf.luceneGraduation.mapper.CropDetailImgMapper;
 import com.forestWolf.luceneGraduation.mapper.CropDetailMapper;
@@ -14,7 +15,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
 
 import java.io.IOException;
 import java.util.Date;
@@ -39,37 +42,77 @@ public class InfoServiceImpl implements InfoService {
     @Autowired
     private CropDetailMapper cropDetailMapper;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public boolean getInfoMation() {
         return getLabelInfo(URL_RIGHT);
     }
 
+
+    private static final String LABEL_VIEW_PRE = "label_view_";
+    private static final String LABEL_DETAIL_PRE = "label_detail_";
+    private static final String TYPE_VIEW_PRE = "type_view_";
+    private static final String TYPE_DETAIL_PRE = "type_detail_";
     @Override
     public List<Label> getLabelView() {
+        String labelView =  stringRedisTemplate.opsForValue().get(LABEL_VIEW_PRE);
+        if(labelView!=null&&!labelView.isEmpty()){
+            System.out.println("命中Redis缓存"+labelView);
+            List<Label> labelList = JSON.parseArray(labelView,Label.class);
+            return labelList;
+        }
         LabelExample labelExample = new LabelExample();
         labelExample.createCriteria();
         List<Label> labelList = labelMapper.selectByExample(labelExample);
+        stringRedisTemplate.opsForValue().set(LABEL_VIEW_PRE,JSON.toJSONString(labelList));
         return labelList;
     }
 
     @Override
     public List<LabelDetail> getLabelDetail(long id) {
+        String labelView =  stringRedisTemplate.opsForValue().get(LABEL_DETAIL_PRE+id);
+        if(labelView!=null&&!labelView.isEmpty()){
+            System.out.println("命中Redis缓存"+labelView);
+            List<LabelDetail> labelDetailList = JSON.parseArray(labelView,LabelDetail.class);
+            return labelDetailList;
+        }
+
         LabelDetailExample labelDetailExample = new LabelDetailExample();
         labelDetailExample.createCriteria().andLabelIdEqualTo(id);
         List<LabelDetail> labelDetails = labelDetailMapper.selectByExample(labelDetailExample);
+
+        stringRedisTemplate.opsForValue().set(LABEL_DETAIL_PRE+id,JSON.toJSONString(labelDetails));
         return labelDetails;
     }
 
     @Override
     public List<CropDetail> getTypeView(long id) {
+        String labelView =  stringRedisTemplate.opsForValue().get(TYPE_VIEW_PRE+id);
+        if(labelView!=null&&!labelView.isEmpty()){
+            System.out.println("命中Redis缓存"+labelView);
+            List<CropDetail> cropDetailList = JSON.parseArray(labelView,CropDetail.class);
+            return cropDetailList;
+        }
+
         CropDetailExample cropDetailExample = new CropDetailExample();
         cropDetailExample.createCriteria().andLabelDetailEqualTo(id);
         List<CropDetail> cropDetailList = cropDetailMapper.selectByExample(cropDetailExample);
+
+        stringRedisTemplate.opsForValue().set(TYPE_VIEW_PRE+id,JSON.toJSONString(cropDetailList));
         return cropDetailList;
     }
 
     @Override
     public CropDetail getTypeDetail(long id) {
+        String labelView =  stringRedisTemplate.opsForValue().get(TYPE_DETAIL_PRE+id);
+        if(labelView!=null&&!labelView.isEmpty()){
+            System.out.println("命中Redis缓存"+labelView);
+            CropDetail cropDetail = JSON.parseObject(labelView,CropDetail.class);
+            return cropDetail;
+        }
+
         CropDetailExample cropDetailExample = new CropDetailExample();
         cropDetailExample.createCriteria().andIdEqualTo(id);
         CropDetail cropDetail = null;
@@ -81,6 +124,8 @@ public class InfoServiceImpl implements InfoService {
             List<CropDetailImg> cropDetailImgList = cropDetailImgMapper.selectByExample(cropDetailImgExample);
             cropDetail.setImgList(cropDetailImgList);
         }
+
+        stringRedisTemplate.opsForValue().set(TYPE_DETAIL_PRE+id,JSON.toJSONString(cropDetail));
         return cropDetail;
     }
 

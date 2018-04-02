@@ -7,6 +7,7 @@ import com.forestWolf.luceneGraduation.response.ServerResponse;
 import com.forestWolf.luceneGraduation.service.InfoService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,9 @@ public class InfoController {
 
     @Autowired
     private InfoService infoService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @RequestMapping(value = "pythonInfo")
     public ServerResponse<Boolean> pythonInfo() {
@@ -68,6 +72,7 @@ public class InfoController {
         }
     }
 
+
     @RequestMapping(value = "type/buildIndex")
     public ServerResponse<Boolean> buildIndex() {
         if (infoService.bulidIndex()) {
@@ -88,5 +93,18 @@ public class InfoController {
         }
     }
 
+
+
+    @RequestMapping(value = "test")
+    public ServerResponse<List<Label>> test() {
+        stringRedisTemplate.opsForValue().set("test1","hanzhanyi");
+        System.out.println(stringRedisTemplate.opsForValue().get("test1"));
+        List<Label> labelList = infoService.getLabelView();
+        if (labelList != null && !labelList.isEmpty()) {
+            return new ServerResponse<List<Label>>(0, "success", labelList);
+        } else {
+            return new ServerResponse<List<Label>>(-1, "failure", null);
+        }
+    }
 
 }
