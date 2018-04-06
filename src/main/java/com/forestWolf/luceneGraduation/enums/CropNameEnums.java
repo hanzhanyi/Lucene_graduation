@@ -5,7 +5,7 @@ public enum CropNameEnums {
     CROP_NAME("cropName", 102, "病虫名称"),
     INTRODUCTION("introduction", 103, "简介"),
     ENGLISH_NAME("englishName", 104, "英文名称"),
-    TOTAL_TEXT("totalText", 105, "id值"),
+    TOTAL_TEXT("totalText", 105, "总字符串 用于全文检索"),
     DAMAGE_SYM("damageSym", 106, "为害症状"),
     OCCURRENCE_FACTOR("occurrenceFactor", 107, "发生因素"),
     MORPHOLOGY("morphology", 108, "形态特征"),

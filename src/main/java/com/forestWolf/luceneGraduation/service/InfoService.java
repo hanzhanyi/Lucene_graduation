@@ -28,4 +28,6 @@ public interface InfoService {
     List<CropDetail> searchIndex(String wd);
 
     List<CropDetail> profSearchIndex(String wd,int no);
+
+    List<CropDetail> seniorSearchIndex(String wd);
 }

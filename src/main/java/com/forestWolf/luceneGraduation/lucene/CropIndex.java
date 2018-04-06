@@ -213,6 +213,62 @@ public class CropIndex {
     }
 
     /**
+     * 高级查询信息
+     *
+     * @param q 查询关键字
+     * @return
+     * @throws Exception
+     */
+    public List<CropDetail> seniorSearchIndex(String q) throws Exception {
+        File file = new File("./lucene");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        dir = FSDirectory.open(Paths.get(file.getPath()));
+        IndexReader reader = DirectoryReader.open(dir);
+        IndexSearcher is = new IndexSearcher(reader);
+        BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
+        SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
+
+        QueryParser introductionParser = new QueryParser(CropNameEnums.TOTAL_TEXT.getCropName(), analyzer);
+        Query introductionQuery = introductionParser.parse(q);
+        booleanQuery.add(introductionQuery, BooleanClause.Occur.SHOULD);
+        TopDocs hits = is.search(booleanQuery.build(), 100);
+        QueryScorer scorer = new QueryScorer(introductionQuery);
+        Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
+        SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color='red'>", "</font></b>");
+        Highlighter highlighter = new Highlighter(simpleHTMLFormatter, scorer);
+        highlighter.setTextFragmenter(fragmenter);
+        List<CropDetail> blogList = new LinkedList<CropDetail>();
+        for (ScoreDoc scoreDoc : hits.scoreDocs) {
+            Document doc = is.doc(scoreDoc.doc);
+            CropDetail cropDetail = new CropDetail();
+            cropDetail.setId(Long.parseLong(doc.get((CropNameEnums.ID.getCropName()))));
+            String cropName = doc.get(CropNameEnums.CROP_NAME.getCropName());
+            String introduction = doc.get(CropNameEnums.INTRODUCTION.getCropName());
+            if (cropName != null) {
+                cropDetail.setCropName(cropName);
+            }
+            if (introduction != null) {
+                TokenStream tokenStream = analyzer.tokenStream(CropNameEnums.INTRODUCTION.getCropName(), new StringReader(introduction));
+                String hIntroduction = highlighter.getBestFragment(tokenStream, introduction);
+                if (Strings.isNullOrEmpty(hIntroduction)) {
+                    if (introduction.length() <= 200) {
+                        cropDetail.setIntroduction(introduction);
+                    } else {
+                        cropDetail.setIntroduction(introduction.substring(0, 200));
+                    }
+                } else {
+                    System.out.println(hIntroduction);
+                    cropDetail.setIntroduction(hIntroduction);
+                }
+            }
+            blogList.add(cropDetail);
+        }
+        return blogList;
+    }
+
+    /**
      * 专业查询信息
      *
      * @param q  查询关键字

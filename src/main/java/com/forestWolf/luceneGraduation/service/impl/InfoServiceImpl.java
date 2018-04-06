@@ -160,7 +160,6 @@ public class InfoServiceImpl implements InfoService {
     @Override
     public List<CropDetail> searchIndex(String wd) {
         CropIndex cropIndex = new CropIndex();
-
         List<CropDetail> cropDetailList = null;
         try {
             cropDetailList = cropIndex.searchCrop(wd);
@@ -177,6 +176,19 @@ public class InfoServiceImpl implements InfoService {
         List<CropDetail> cropDetailList = null;
         try {
             cropDetailList = cropIndex.profSearchCrop(wd,type);
+        } catch (Exception e) {
+            System.out.println("查询成功");
+            e.printStackTrace();
+        }
+        return cropDetailList;
+    }
+
+    @Override
+    public List<CropDetail> seniorSearchIndex(String wd) {
+        CropIndex cropIndex = new CropIndex();
+        List<CropDetail> cropDetailList = null;
+        try {
+            cropDetailList = cropIndex.seniorSearchIndex(wd);
         } catch (Exception e) {
             System.out.println("查询成功");
             e.printStackTrace();
