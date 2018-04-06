@@ -25,5 +25,7 @@ public interface InfoService {
 
     boolean bulidIndex();
 
-    List<CropDetail> SearchIndex(String wd);
+    List<CropDetail> searchIndex(String wd);
+
+    List<CropDetail> profSearchIndex(String wd,int no);
 }

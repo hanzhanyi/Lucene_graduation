@@ -83,9 +83,20 @@ public class InfoController {
     }
 
     @RequestMapping(value = "type/search")
-    public ServerResponse<List<CropDetail>> SearchIndex(@Param(value = "wd") String wd) {
+    public ServerResponse<List<CropDetail>> searchIndex(@Param(value = "wd") String wd) {
         ServerResponse<List<CropDetail>> serverResponse = new ServerResponse<List<CropDetail>>();
-        List<CropDetail> cropDetailList = infoService.SearchIndex(wd);
+        List<CropDetail> cropDetailList = infoService.searchIndex(wd);
+        if (!cropDetailList.isEmpty()) {
+            return new ServerResponse<List<CropDetail>>(0, "success", cropDetailList);
+        } else {
+            return new ServerResponse<List<CropDetail>>(-1, "failure", null);
+        }
+    }
+
+    @RequestMapping(value = "type/profsearch")
+    public ServerResponse<List<CropDetail>> profSearchIndex(@Param(value = "wd") String wd,@Param(value = "type") Integer type) {
+        ServerResponse<List<CropDetail>> serverResponse = new ServerResponse<List<CropDetail>>();
+        List<CropDetail> cropDetailList = infoService.profSearchIndex(wd,type);
         if (!cropDetailList.isEmpty()) {
             return new ServerResponse<List<CropDetail>>(0, "success", cropDetailList);
         } else {
