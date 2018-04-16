@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by zhanghenan on 17/8/14.
+ * Created by hanzhanyi on 18/4/16.
  */
 public class UniqueIDUtil {
     private static final Logger logger = LoggerFactory.getLogger(UniqueIDUtil.class);
@@ -120,27 +120,6 @@ public class UniqueIDUtil {
         exec.schedule(uidGenerateTask, 0L, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * 获取主键ID
-     *
-     * @return
-     * @throws Exception
-     */
-    public static long getUniqueID() {
-
-        if (uniqueIdQueue.size() < sizeDivide) {
-            exec.schedule(uidGenerateTask, 0L, TimeUnit.MILLISECONDS);
-        }
-
-        Long uid = uniqueIdQueue.poll();
-        while (uid == null) {
-            logger.info("The uniqueIdQueue is empty! scale={},sizeCeiling={}", scale, sizeCeiling);
-            generateNewId();
-            uid = uniqueIdQueue.poll();
-        }
-
-        return uid.longValue();
-    }
 
     private static synchronized void generateNewId() {
 
