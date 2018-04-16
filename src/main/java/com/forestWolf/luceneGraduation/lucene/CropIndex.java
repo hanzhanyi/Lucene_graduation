@@ -61,7 +61,6 @@ public class CropIndex {
     public void addIndex(CropDetail cropDetail) throws Exception {
         IndexWriter writer = getWriter();
         Document doc = new Document();
-
         doc.add(new StringField(CropNameEnums.ID.getCropName(), String.valueOf(cropDetail.getId()), Field.Store.YES));
         doc.add(new StringField(CropNameEnums.CROP_NAME.getCropName(), cropDetail.getCropName(), Field.Store.YES));
         doc.add(new TextField(CropNameEnums.TOTAL_TEXT.getCropName(), cropDetail.getEnglishName() + cropDetail.getIntroduction()
@@ -79,8 +78,6 @@ public class CropIndex {
         doc.add(new TextField(CropNameEnums.PATHOGEN.getCropName(), cropDetail.getPathogen(), Field.Store.YES));
         doc.add(new TextField(CropNameEnums.CYCLE.getCropName(), cropDetail.getCycle(), Field.Store.YES));
         doc.add(new TextField(CropNameEnums.CROP_TYPE.getCropName(), cropDetail.getCropType().toString(), Field.Store.YES));
-
-
         System.out.println("正在建立索引 " + cropDetail.getCropName());
         writer.addDocument(doc);
         writer.close();
