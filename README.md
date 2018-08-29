@@ -17,6 +17,12 @@ git 最新版即可  （用于网上代码）
 
 maven 3.0.0以上   （用于下载jar包依赖）
 
+redis 最新版即可 （服务器端缓存）
+
+Mysql 数据库 版本不限
+
+---
+
 ### 安卓端需要：
 
 android studio 最新版即可  （用来打开安卓代码）
@@ -42,11 +48,14 @@ https://www.cnblogs.com/hkgov/p/7694101.html
 maven下载及配置：<br>
 https://jingyan.baidu.com/article/3052f5a1e8f86397f21f8671.html
 
+Redis安装及配置<br>
+http://www.runoob.com/redis/redis-install.html
+
 ### 安卓端操作步骤：
 android studio下载 ：<br>
 https://developer.android.com/studio/
 
-
+---
 
 ## 代码查看步骤：
 
@@ -68,8 +77,16 @@ https://blog.csdn.net/Elenal/article/details/53364509
 
 - 运行后端项目，通过LuceneGraduationApplication此文件，运行main方法即可。
 
-- 具体初始化过程，可以参考论文中的接口设计，需要先爬取数据，在建立索引，等待索引建立完毕才能进行接口调用访问。
+- 具体初始化过程，可以参考论文中的接口设计，需要先爬取数据，在建立索引，等待索引建立完毕才能进行接口调用访问，用到的相应技术也在论文中。
 
-- 安卓端需要更改配置文件中的服务器IP地址，重新打包才可运行，本地模拟器运行可配置127.0.0.1。
+- 安卓端需要更改配置文件中的服务器IP地址，重新打apk包才可运行，本地模拟器运行可配置127.0.0.1。
 
+---
 
+### 以上为后端查看代码所需工具集合以及编译所需，安卓端配置运行安装详细，可完全参照《android 第一行代码》（高强有这本书），安卓端时间太长，有遗忘了。
+
+### 注意事项
+
+- 爬取代码考虑服务端性能，只使用单线程进行爬取，大概1G 单核 机器需要20min左右，如果需重新建立索引，先删除原有索引再重新建立。
+
+- 后端配置文件都在application.properties中，如有修改可自行更改。
